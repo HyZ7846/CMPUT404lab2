@@ -1,5 +1,7 @@
 import socket
+import time
 
+LOCAL_TIME = time.ctime(time.time())
 HEADER = 64
 PORT = 5050
 DISCONNECT_MESSAGE = "!DISCONNECTED"
@@ -17,6 +19,7 @@ def send(msg):
     send_length += b' ' * (HEADER - len(send_length))
     client.send(send_length)
     client.send(message)
+    print(client.recv(2048).decode(FORMAT))
 
 connected = True
 while connected:

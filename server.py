@@ -1,6 +1,8 @@
 import socket
 import threading
+import time
 
+LOCAL_TIME = time.ctime(time.time())
 HEADER = 64
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
@@ -24,6 +26,8 @@ def handle_client(conn, addr):
                 connected = False
                 
             print(f"[{addr}]: {msg}")
+            conn.send(f'{LOCAL_TIME}\n[{addr}]: {msg}'.encode(FORMAT))
+
     conn.close()
     
 
@@ -35,7 +39,7 @@ def start():
         thread = threading.Thread(target=handle_client, args=(conn,addr))
         thread.start()
         activeCount = threading.active_count()
-        print(f"[ACTIVE CONNECTIONS] {activeCount - 1}")
+        print(f"[ACTIVE CONNECTIONS] {activeCount - 1}\n")
 
 print("[STARTING] server is starting....")
 start()
